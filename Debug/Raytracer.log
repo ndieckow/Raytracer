@@ -1,0 +1,9 @@
+﻿  Main.cpp
+E:\Dokumente\Coding\C++\2019\Raytracer\Raytracer\src\Main.cpp(33): warning C4305: 'initializing': truncation from 'double' to 'float'
+E:\Dokumente\Coding\C++\2019\Raytracer\Raytracer\src\Main.cpp(34): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+E:\Dokumente\Coding\C++\2019\Raytracer\Raytracer\src\Main.cpp(97): warning C4244: 'argument': conversion from 'const double' to 'int', possible loss of data
+E:\Dokumente\Coding\C++\2019\Raytracer\Raytracer\src\Main.cpp(118): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Material.cpp
+  Scene.cpp
+  Generating Code...
+  Raytracer.vcxproj -> E:\Dokumente\Coding\C++\2019\Raytracer\Debug\Raytracer.exe
