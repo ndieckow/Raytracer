@@ -25,6 +25,10 @@ struct RGBPixel
 	{
 	}
 
+	explicit RGBPixel(const Vector3d &c) : r(dtouc(c.x)), g(dtouc(c.y)), b(dtouc(c.z))
+	{
+	}
+
 	void setColor(unsigned char rv, unsigned char gv, unsigned char bv)
 	{
 		r = rv;
@@ -62,7 +66,7 @@ public:
 	int getWidth() const;
 	int getHeight() const;
 	void Fill(RGBPixel color);
-	void WriteToFile(std::string fname) const;
+	void WriteToFile(const std::string& fname) const;
 
 	RGBPixel& operator[](int idx);
 	RGBPixel& at(int x, int y);

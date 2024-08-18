@@ -1,6 +1,10 @@
 #include "Scene.h"
 
-Scene::Scene() : m_Viewpoint(0, 0, 0)
+Scene::Scene() : m_BackgroundColor(1, 1, 1)
+{
+}
+
+Scene::Scene(double bgX, double bgY, double bgZ) : m_BackgroundColor(bgX, bgY, bgZ)
 {
 }
 
@@ -8,9 +12,9 @@ Scene::~Scene()
 {
 }
 
-Vector3d Scene::getViewpoint() const
+Vector3d Scene::getBackgroundColor() const
 {
-	return m_Viewpoint;
+	return m_BackgroundColor;
 }
 
 Scene& Scene::AddObject(SceneObject* object)

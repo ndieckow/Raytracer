@@ -3,6 +3,7 @@
 
 #include "RGBImage.h"
 #include <algorithm>
+#include <iostream>
 
 RGBImage::RGBImage(int w, int h) : m_Width(w), m_Height(h), m_Pixels(new RGBPixel[w * h])
 {
@@ -38,7 +39,7 @@ void RGBImage::Fill(RGBPixel color)
 	for (int i = 0; i < m_Width * m_Height; i++) m_Pixels[i] = color;
 }
 
-void RGBImage::WriteToFile(std::string fname) const
+void RGBImage::WriteToFile(const std::string& fname) const
 {
 	stbi_write_png(fname.c_str(), m_Width, m_Height, 3, m_Pixels, m_Width * 3);
 }
