@@ -1,0 +1,20 @@
+# ninja log v6
+5	475	1723983047500539947	CMakeFiles/Raytracer.dir/src/Renderer.cpp.o	5a5ea1417e24ecb9
+4	482	1723983047499955575	CMakeFiles/Raytracer.dir/src/Material.cpp.o	e8cd3a21d2d166d3
+4	498	1723983102705215186	CMakeFiles/Raytracer.dir/src/Main.cpp.o	902663e1492360cc
+4	521	1723983047500193574	CMakeFiles/Raytracer.dir/src/RGBImage.cpp.o	784988c912c369d8
+5	521	1723983047500360157	CMakeFiles/Raytracer.dir/src/Scene.cpp.o	db1602186b61bf30
+498	554	1723983103200091779	Raytracer	f5a40251ea2e1c15
+2	60	1723983434815527523	build.ninja	d30c9b5d1829224e
+3	526	1723983434825815523	CMakeFiles/Raytracer.dir/src/Renderer.cpp.o	abf868c9b60a437b
+2	532	1723983434825410524	CMakeFiles/Raytracer.dir/src/Material.cpp.o	19e1e613a31bc8b1
+2	558	1723983434825551024	CMakeFiles/Raytracer.dir/src/RGBImage.cpp.o	ab25cfa43ebd4c17
+2	571	1723983434825684065	CMakeFiles/Raytracer.dir/src/Scene.cpp.o	bd89e93f1f92693d
+4	558	1723983751448548111	CMakeFiles/Raytracer.dir/src/Main.cpp.o	1c75f7e2730d6005
+559	613	1723983752003558999	Raytracer	f5a40251ea2e1c15
+4	551	1723984002721700577	CMakeFiles/Raytracer.dir/src/Main.cpp.o	1c75f7e2730d6005
+552	606	1723984003269455203	Raytracer	f5a40251ea2e1c15
+4	565	1723984097366359987	CMakeFiles/Raytracer.dir/src/Main.cpp.o	1c75f7e2730d6005
+566	623	1723984097928043847	Raytracer	f5a40251ea2e1c15
+3	566	1723984168847532980	CMakeFiles/Raytracer.dir/src/Main.cpp.o	1c75f7e2730d6005
+566	621	1723984169410226629	Raytracer	f5a40251ea2e1c15

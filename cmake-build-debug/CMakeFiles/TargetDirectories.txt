@@ -1,0 +1,3 @@
+/Users/iniki/Documents/Coding/C++/Raytracer/cmake-build-debug/CMakeFiles/Raytracer.dir
+/Users/iniki/Documents/Coding/C++/Raytracer/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/iniki/Documents/Coding/C++/Raytracer/cmake-build-debug/CMakeFiles/rebuild_cache.dir

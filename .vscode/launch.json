@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "C/C++: g++-13 Aktive Datei erstellen und debuggen",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "preLaunchTask": "C/C++: g++-13 Aktive Datei kompilieren"
+        }
+    ],
+    "version": "2.0.0"
+}
