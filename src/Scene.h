@@ -7,29 +7,28 @@
 
 class Scene {
 private:
-	std::vector<SceneObject *> m_Objects;
-	std::vector<Light *> m_Lights;
-	Vector3d m_BackgroundColor;
+    std::vector<SceneObject*> m_Objects;
+    std::vector<Light*> m_Lights;
+    Vector3d m_BackgroundColor;
 
 public:
-	Scene();
+    Scene();
 
-	Scene(double bgX, double bgY, double bgZ);
+    Scene(double bgX, double bgY, double bgZ);
 
-	~Scene();
+    ~Scene();
 
-	Vector3d getBackgroundColor() const;
+    Vector3d getBackgroundColor() const;
 
-	Scene &AddObject(SceneObject *object);
+    Scene &AddObject(SceneObject *object);
 
-	void Clear();
+    void Clear();
 
-	Scene &AddLight(Light *light);
+    Scene &AddLight(Light *light);
 
-	const std::vector<Light *> &getLights() const;
+    const std::vector<Light*> &getLights() const;
 
-	std::vector<SceneObject *>::const_iterator iter_begin() const;
+    std::vector<SceneObject*>::const_iterator iter_begin() const;
 
-	std::vector<SceneObject *>::const_iterator iter_end() const;
+    std::vector<SceneObject*>::const_iterator iter_end() const;
 };
-
