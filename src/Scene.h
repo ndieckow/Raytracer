@@ -1,9 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <memory>
 #include "Light.h"
-#include "RGBImage.h"
 
 class Scene {
 private:

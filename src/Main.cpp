@@ -3,12 +3,11 @@
 #include "Sphere.h"
 #include "Light.h"
 #include "Plane.h"
+#include "RGBImage.h"
 
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
-#include <algorithm>
-#include <random>
 
 #define PI 3.1415926536
 #define RND (2.0*((rand() % 100) / (double)100) - 1.0)
@@ -25,8 +24,7 @@ Vector3d camcr(double x, double y) {
 	return Vector3d(((2 * x - W) / W) * tan(fovx), -((2 * y - H) / H) * tan(fovy), -1.0);
 }
 
-// Casts a ray in a given scene and returns the color that the pixel should take on.
-Vector3d CastRay(const Ray &ray, const Scene &s, int depth) {
+std::pair<SceneObject*, double> Intersect(const Ray &ray, const Scene &s) {
 	// Loop through all objects in the scene and check for intersection with ray.
 	// The object closest to the camera is saved.
 	auto iter = s.iter_begin();
@@ -40,6 +38,14 @@ Vector3d CastRay(const Ray &ray, const Scene &s, int depth) {
 		}
 		iter++;
 	}
+	return std::make_pair(io, intersection);
+}
+
+// Casts a ray in a given scene and returns the color that the pixel should take on.
+Vector3d CastRay(const Ray &ray, const Scene &s, int depth) {
+	// Loop through all objects in the scene and check for intersection with ray.
+	// The object closest to the camera is saved.
+	auto [io, intersection] = Intersect(ray, s);
 
 	// Initialize with the scene's background color. If no object is hit, this is returned.
 	Vector3d color{s.getBackgroundColor()};
@@ -69,7 +75,14 @@ Vector3d CastRay(const Ray &ray, const Scene &s, int depth) {
 
 		while (light != s.getLights().end()) {
 			// Vector from intersection point to light.
-			Vector3d lightHit = ((*light)->getPosition() - ip).normalized();
+			Vector3d lightHitUnnorm = (*light)->getPosition() - ip;
+			Vector3d lightHit = lightHitUnnorm.normalized();
+			Ray lightRay{(*light)->getPosition(), -lightHit};
+
+			// Check for intersection
+			auto [io, intersection] = Intersect(lightRay, s);
+			if (intersection < lightHitUnnorm.norm() - 1e-3) { light++; continue; }
+
 			// cos of angle between normal and lightHit
 			double lightNormalCos = MAX(0.0, normal.dot(lightHit));
 
