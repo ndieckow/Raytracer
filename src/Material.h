@@ -16,4 +16,4 @@ struct Material {
 	}
 };
 
-extern Material mirror, stone, redgloss, bluegloss, whiteWall, redWall, greenWall;
+extern Material mirror, stone, redgloss, bluegloss, whiteWall, redWall, greenWall, glass;

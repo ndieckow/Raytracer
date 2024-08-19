@@ -60,12 +60,14 @@ Vector3d CastRay(const Ray &ray, const Scene &s, int depth) {
 		Vector3d ip = ray.at(intersection); // point of intersection
 		Vector3d normal = io->getNormal(ip);
 
-		// Get the vector that starts at the origin and points toward the intersection point, normalized.
+		// Get the normal vector starting at the origin and pointing toward the intersection point.
 		Vector3d dmo = (ip - ray.getOrigin()).normalized();
 
+		// REFLECTION
 		double r0 = pow((mat.refraction_index - 1) / (mat.refraction_index + 1), 2);
-		double refl_prob = r0 + (1 - r0) * pow((1 + dmo.dot(normal)), 5);
-		// Schlick's approximation of the Fresnel equation
+		double cosTheta = MAX(0.0, (-dmo).dot(normal));
+		// Schlick's approximation of the Fresnel equation: What portion of the light gets reflected? The rest gets refracted.
+		double refl_prob = r0 + (1 - r0) * pow(1 - cosTheta, 5);
 
 		// Compute the direction of the reflected ray.
 		Vector3d reflectDir = (-dmo).reflect(normal);
@@ -73,13 +75,26 @@ Vector3d CastRay(const Ray &ray, const Scene &s, int depth) {
 		Ray reflectRay(ip + reflectDir * 1e-3, reflectDir);
 		Vector3d reflectColor = CastRay(reflectRay, s, depth + 1);
 
+		// REFRACTION
+		// Cast a ray inside the medium until it hits the other side
+		double mu = 1 / mat.refraction_index;
+		Vector3d refractDir = -normal * sqrt(1 - mu * mu * (1 - cosTheta * cosTheta)) + (dmo + normal * cosTheta) * mu;
+		Ray refractRay(ip + refractDir * 1e-3, refractDir);
+		double intersectTime = io->Intersect(refractRay);
+		Vector3d refractColor{0, 0, 0};
+		if (intersectTime > 0) {
+			Vector3d outPoint = refractRay.at(intersectTime);
+			Ray outRay{outPoint + dmo * 1e-3, dmo};
+			refractColor += CastRay(outRay, s, depth + 1);
+		}
+
 		while (light != s.getLights().end()) {
 			// Vector from intersection point to light.
 			Vector3d lightHitUnnorm = (*light)->getPosition() - ip;
 			Vector3d lightHit = lightHitUnnorm.normalized();
 			Ray lightRay{(*light)->getPosition(), -lightHit};
 
-			// Check for intersection
+			// SHADOWS: Check for intersection
 			auto [io, intersection] = Intersect(lightRay, s);
 			if (intersection < lightHitUnnorm.norm() - 1e-3) { light++; continue; }
 
@@ -103,7 +118,8 @@ Vector3d CastRay(const Ray &ray, const Scene &s, int depth) {
 
 		color *= diffuse_intensity;
 		color += Vector3d(1, 1, 1) * specular_intensity * (1 - mat.softness);
-		color += reflectColor * mat.reflect * refl_prob;
+		color += reflectColor * mat.reflect * refl_prob; // Do we even need mat.reflect at this point?
+		color += refractColor * (1 - refl_prob);
 	}
 	return color;
 }
@@ -132,7 +148,7 @@ int main(int argc, char *argv[]) {
 
 	// Add some spheres
 	SceneObject *s1 = new Sphere(Vector3d(0, -2 + 0.5, -3), 0.5, redgloss);
-	SceneObject *s2 = new Sphere(Vector3d(-1.0, -2 + 1, -4), 1, mirror);
+	SceneObject *s2 = new Sphere(Vector3d(-1.0, -2 + 1, -4), 1, glass);
 	SceneObject *s3 = new Sphere(Vector3d(1.0, -2 + 0.5, -4), 0.5, mirror);
 
 	// Add a room without ceiling

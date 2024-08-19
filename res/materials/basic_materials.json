@@ -1,0 +1,26 @@
+{
+  "mirror": {
+    "color": {
+      "red": 0,
+      "blue": 0.1,
+      "green": 0.05
+    },
+    "softness": 0.5,
+    "specular_exponent": 20,
+    "reflect": 0.6,
+    "refraction_index": 0,
+    "transparency": 0
+  },
+  "stone": {
+    "color": {
+      "red": 0.5,
+      "blue": 0.5,
+      "green": 0.5
+    },
+    "softness": 0.8,
+    "specular_exponent": 2,
+    "reflect": 0,
+    "refraction_index": 1,
+    "transparency": 0
+  }
+}
