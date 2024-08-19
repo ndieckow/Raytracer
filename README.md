@@ -6,11 +6,11 @@ Mainly inspired by https://github.com/ssloy/tinyraytracer/wiki and the TU Wien c
 * Currently supports two primitive shapes: Spheres and Planes
 * Supports some basic materials
 * Basic illumination shading; crude approximation of the rendering equation
-* Hard shadows
+* Area light sources (currently only circles) and approximations of soft shadows
 * Refraction
 
 ## Next steps
 * Apply Monte Carlo integration to ~~solve~~ approximate the actual rendering equation
 
 ## Current Output
-![](res/img/output_24_08_19.png)
+![](res/img/output_soft_shadows.png)

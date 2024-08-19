@@ -89,30 +89,38 @@ Vector3d CastRay(const Ray &ray, const Scene &s, int depth) {
 		}
 
 		while (light != s.getLights().end()) {
-			// Vector from intersection point to light.
-			Vector3d lightHitUnnorm = (*light)->getPosition() - ip;
-			Vector3d lightHit = lightHitUnnorm.normalized();
-			Ray lightRay{(*light)->getPosition(), -lightHit};
+			int n_Samples = (*light)->getSamples();
+			double diff_int_buf = 0;
+			double spec_int_buf = 0;
+			for (int i = 0; i < n_Samples; i++) {
+				Vector3d sampledPos = (*light)->Sample();
 
-			// SHADOWS: Check for intersection
-			auto [io, intersection] = Intersect(lightRay, s);
-			if (intersection < lightHitUnnorm.norm() - 1e-3) { light++; continue; }
+				// Vector from intersection point to light.
+				Vector3d lightHitUnnorm = sampledPos - ip;
+				Vector3d lightHit = lightHitUnnorm.normalized();
+				Ray lightRay{sampledPos, -lightHit};
 
-			// cos of angle between normal and lightHit
-			double lightNormalCos = MAX(0.0, normal.dot(lightHit));
+				// SHADOWS: Check for intersection
+				auto [io, intersection] = Intersect(lightRay, s);
+				if (intersection < lightHitUnnorm.norm() - 1e-3) { continue; }
 
-			// Reflect the light hit vector wrt the surface normal.
-			Vector3d lightHitReflect = lightHit.reflect(normal);
-			// Compute cosine of angle between lightHitReflect and ray pointing toward ray origin.
-			double lightRayOriginCos = -dmo.dot(lightHitReflect);
-			// Specular exponent determines how smooth the specular light will be.
-			// High exponent: Pointy and smaller
-			// Low exponent: Smooth and larger
-			double spec = pow(MAX(0.0, lightRayOriginCos), mat.specular_exponent);
+				// cos of angle between normal and lightHit
+				double lightNormalCos = MAX(0.0, normal.dot(lightHit));
 
-			diffuse_intensity += lightNormalCos * (*light)->getIntensity(); // diffuse lighting
-			specular_intensity += (*light)->getIntensity() * spec; // specular lighting
+				// Reflect the light hit vector wrt the surface normal.
+				Vector3d lightHitReflect = lightHit.reflect(normal);
+				// Compute cosine of angle between lightHitReflect and ray pointing toward ray origin.
+				double lightRayOriginCos = -dmo.dot(lightHitReflect);
+				// Specular exponent determines how smooth the specular light will be.
+				// High exponent: Pointy and smaller
+				// Low exponent: Smooth and larger
+				double spec = pow(MAX(0.0, lightRayOriginCos), mat.specular_exponent);
 
+				diff_int_buf += lightNormalCos * (*light)->getIntensity(); // diffuse lighting
+				spec_int_buf += (*light)->getIntensity() * spec; // specular lighting
+			}
+			diffuse_intensity += diff_int_buf / n_Samples;
+			specular_intensity += spec_int_buf / n_Samples;
 			light++;
 		}
 
@@ -160,10 +168,9 @@ int main(int argc, char *argv[]) {
 
 	scene.AddObject(s1).AddObject(s2).AddObject(s3).AddObject(floor).AddObject(leftWall).AddObject(rightWall).
 			AddObject(backWall).AddObject(ceiling);
-	Light *l1 = new Light(Vector3d(0, 1.8, -3), 1.0);
-	//Light* l2 = new Light(Vector3d(-2, 2, -2), 0.3);
-	//Light* l3 = new Light(Vector3d(2, 1, 0), 0.3);
-	scene.AddLight(l1);
+	//Light *l1 = new Light(Vector3d(0, 1.8, -3), 1.0);
+	CircularLight *l2 = new CircularLight(Vector3d(0, 1.5, -3), 1.0, Vector3d(0, -1, 0), 0.3);
+	scene.AddLight(l2);
 
 	RGBImage res = Render(scene);
 	res.WriteToFile("output.png");
